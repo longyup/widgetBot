@@ -1,5 +1,7 @@
 package club.vasilis.coolq.http;
 
+import cn.hutool.json.JSONArray;
+import cn.hutool.json.JSONObject;
 import okhttp3.Request;
 import okhttp3.Response;
 
@@ -22,12 +24,12 @@ public class exam extends baseHttp{
      * url：https://jx3.derzh.com/exam
      * methon get
      * params m=1&q=问题&csrf=
-     * @param ques
+     * @param q
      * @return
      */
-    private String findbyq(String ques){
+    public String findbyq(String q){
 
-        String url = "https://jx3.derzh.com/exam/?m=1&q="+ques+"&csrf=";
+        String url = "https://jx3.derzh.com/exam/?m=1&q="+q+"&csrf=";
         String json = "";
         Request request = new Request.Builder()
                 .url(url)
@@ -46,9 +48,17 @@ public class exam extends baseHttp{
 
 
         //解析json
-
-
-        return null;
+        String report_msg = "";
+        JSONObject object = new JSONObject(json);
+        JSONArray result = object.getJSONArray("result");
+        for (int i = 0; i < result.size(); i++) {
+            //{"ques":"单选题：《青岩诗钞·卷三》中的诗出自何人之手？","answ":"王勃"}
+            object = result.getJSONObject(i);
+            String ques = object.getStr("ques").replace("单选题：","").replace("單選題：", "").replace("单选题:","").replace("單選題:", "");
+            String answ = object.getStr("answ");
+            report_msg += "问题:" + ques + "\n答案:" + answ + "\n";
+        }
+        return report_msg;
 
     }
 

@@ -13,16 +13,20 @@ import java.util.concurrent.TimeUnit;
  * @date 2019/5/11 -10:58
  */
 
-public class baseHttp  {
-    public OkHttpClient client;
-    public baseHttp() {
+public class baseHttp {
+    public static OkHttpClient client;
+    static {
+        initClient();
+    }
+    public static void initClient() {
         client = new OkHttpClient.Builder()
                 .callTimeout(2000L, TimeUnit.MILLISECONDS)
                 .readTimeout(2000L, TimeUnit.MILLISECONDS)
                 .sslSocketFactory(SSLSocketClient.getSSLSocketFactory())
                 .build();
     }
-    public Response getresponse(String url, FormBody body) throws IOException {
+
+    public static Response getresponse(String url, FormBody body) throws IOException {
         Request request = new Request.Builder()
                 .url(url)
                 .post(body)

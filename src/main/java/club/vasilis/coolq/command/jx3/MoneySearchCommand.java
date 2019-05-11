@@ -20,15 +20,9 @@ import java.util.ArrayList;
 public class MoneySearchCommand implements GroupCommand {
     @Override
     public String groupMessage(EventGroupMessage eventGroupMessage, GroupUser groupUser, Group group, String s, ArrayList<String> arrayList) {
-        MoneySearch search = new MoneySearch();
-        Double[] doubles = search.findByserver(group.getId(), arrayList.get(0));
-        if (doubles == null){
-            String message = new MessageBuilder().add(new ComponentAt(groupUser.getId()))
-                    .newLine()
-                    .add("区服不存在，请重新确认。或联系开发者")
-                    .toString();
-            eventGroupMessage.getHttpApi().sendGroupMsg(group.getId(),message);
-        }else {
+
+        Double[] doubles = MoneySearch.findByserver(group.getId(), arrayList.get(0));
+        if (doubles != null){
             String message = new MessageBuilder().add(new ComponentAt(groupUser.getId()))
                     .newLine()
                     .add("金价")
@@ -42,10 +36,14 @@ public class MoneySearchCommand implements GroupCommand {
                     .add(new ComponentEmoji(11088))
                     .add("数据来源于DD373 仅供参考")
                     .add(new ComponentEmoji(11088))
+                    .add("冷却时间2mins")
                     .toString();
 
             eventGroupMessage.getHttpApi().sendGroupMsg(group.getId(),message);
         }
+
+
+
 
        /* //double byserver = new MoneySearch().findByserver(group,arrayList.get(0));
         if (byserver == 0) {

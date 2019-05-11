@@ -31,26 +31,22 @@ public class MoneySearch extends baseHttp {
     private static Map<String, String> serverMap = new HashMap<>();
     private static Map<String, List<String>> area_server = new HashMap<>();
     private static long startTime;
-    private static long endTime;
 
-    public MoneySearch() {
-        super();
-        init();
-    }
 
     /**
      * 屎山
      */
-    private void init() {
-
+    static {
+        initClient();
         getAllarea();
         getAllServer();
+        startTime = System.currentTimeMillis();
     }
 
     /**
      * 获取所有的区
      */
-    private void getAllarea() {
+    private static void getAllarea() {
         String json = "";
         String url = "http://api.dd373.com/Game/GetGameOther";
         FormBody body = new FormBody.Builder()
@@ -86,8 +82,7 @@ public class MoneySearch extends baseHttp {
     /**
      * 获取大区下的服务器
      */
-    private void getAllServer() {
-        startTime = System.currentTimeMillis();
+    private static void getAllServer() {
         for (String key : areaMap.keySet()) {
             //存放同大区下所有服务器
             List<String> server = new ArrayList<>();
@@ -130,7 +125,14 @@ public class MoneySearch extends baseHttp {
 
     }
 
-    public Double[] findByserver(long groupId, String temp) {
+    public static Double[] findByserver(long groupId, String temp) {
+        if (System.currentTimeMillis() - startTime < 2 * 60 * 1000){
+            IcqHttpApi icqHttpApi = Main.bot.getAccountManager().getNonAccountSpecifiedApi();
+            icqHttpApi.sendGroupMsg(groupId, "还在冷却时间");
+            return null;
+        }
+            startTime = System.currentTimeMillis();
+
         //先找到对应的大区
         String areaName = "";
         outterLoop:
@@ -143,6 +145,8 @@ public class MoneySearch extends baseHttp {
             }
         }
         if ("".equals(areaName)) {
+            IcqHttpApi icqHttpApi = Main.bot.getAccountManager().getNonAccountSpecifiedApi();
+            icqHttpApi.sendGroupMsg(groupId, "区服不存在，请重新确认。或联系开发者");
             return null;
         }
 
@@ -210,23 +214,22 @@ public class MoneySearch extends baseHttp {
         }
         BigDecimal b = new BigDecimal(coumt / size);
         doubles[1] = b.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-        endTime = System.currentTimeMillis();    //获取结束时间
         return doubles;
 
     }
 
-    private void callAdmin() {
+    private static void callAdmin() {
         IcqHttpApi icqHttpApi = Main.bot.getAccountManager().getNonAccountSpecifiedApi();
         icqHttpApi.sendPrivateMsg(799453724L, "网络请求异常");
     }
 
     public static void main(String[] args) {
-        Double[] doubles = new MoneySearch().findByserver(123456L, "绝代天骄");
+        Double[] doubles = MoneySearch.findByserver(123456L, "绝代天骄");
         for (int i = 0; i < doubles.length; i++) {
             System.out.println(doubles[i]);
         }
         System.out.println();
-        System.out.println("程序运行时间：" + (endTime - startTime) + "ms");    //输出程序运行时间
+
     }
 
 }
