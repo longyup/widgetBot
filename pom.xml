@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>club.vasilis.coolq</groupId>
+    <artifactId>coolq_plugins</artifactId>
+    <version>1.0.0.3</version>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>7</source>
+                    <target>7</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <repositories>
+
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
+
+    <dependencies>
+
+        <!-- 工程所需jar包引用开始 -->
+        <!-- 单元测试 -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.7</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.hydevelop</groupId>
+            <artifactId>PicqBotX</artifactId>
+            <version>4.10.1.928</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.hydevelop</groupId>
+            <artifactId>HyConfigLib</artifactId>
+            <version>3.1.52</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.hydevelop</groupId>
+            <artifactId>HyLogger</artifactId>
+            <version>4.0.254</version>
+        </dependency>
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>3.14.0</version>
+
+            <exclusions>
+                <exclusion>
+                    <groupId>com.google.android</groupId>
+                    <artifactId>android</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+    </dependencies>
+    
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
+    </properties>
+</project>
