@@ -1,8 +1,8 @@
-package club.vasilis.coolq.http;
+package club.vasilis.coolq.jx3.http;
 
 import cc.moecraft.icq.sender.IcqHttpApi;
 import club.vasilis.coolq.Main;
-import club.vasilis.coolq.domain.Dd373;
+import club.vasilis.coolq.jx3.domain.Dd373;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import com.google.gson.Gson;
@@ -37,7 +37,6 @@ public class MoneySearch extends baseHttp {
      * 屎山
      */
     static {
-        initClient();
         getAllarea();
         getAllServer();
         startTime = System.currentTimeMillis();
@@ -130,7 +129,7 @@ public class MoneySearch extends baseHttp {
             IcqHttpApi icqHttpApi = Main.bot.getAccountManager().getNonAccountSpecifiedApi();
             icqHttpApi.sendGroupMsg(groupId, "还在冷却时间");
             return null;
-        }
+        }   
             startTime = System.currentTimeMillis();
 
         //先找到对应的大区

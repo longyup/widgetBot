@@ -1,4 +1,4 @@
-package club.vasilis.coolq.http;
+package club.vasilis.coolq.jx3.http;
 
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;

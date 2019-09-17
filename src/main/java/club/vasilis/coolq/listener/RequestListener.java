@@ -17,6 +17,7 @@ public class RequestListener extends IcqListener {
     {
         // 接受所有群邀请
         event.accept();
+        event.getBot().getAccountManager().refreshCache();
     }
     @EventHandler
     public void onGroupAdd(EventGroupAddRequest event)

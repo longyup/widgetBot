@@ -1,4 +1,4 @@
-package club.vasilis.coolq.http;
+package club.vasilis.coolq.jx3.http;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;

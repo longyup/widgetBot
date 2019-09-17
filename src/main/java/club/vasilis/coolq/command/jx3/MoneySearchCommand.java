@@ -8,7 +8,8 @@ import cc.moecraft.icq.sender.message.components.ComponentAt;
 import cc.moecraft.icq.sender.message.components.ComponentEmoji;
 import cc.moecraft.icq.user.Group;
 import cc.moecraft.icq.user.GroupUser;
-import club.vasilis.coolq.http.MoneySearch;
+import club.vasilis.coolq.jx3.config.J3Config;
+import club.vasilis.coolq.jx3.http.MoneySearch;
 
 import java.util.ArrayList;
 
@@ -20,7 +21,9 @@ import java.util.ArrayList;
 public class MoneySearchCommand implements GroupCommand {
     @Override
     public String groupMessage(EventGroupMessage eventGroupMessage, GroupUser groupUser, Group group, String s, ArrayList<String> arrayList) {
-
+        if (!J3Config.j3gorupList.contains(group.getId())){
+            return "此群没有授权!";
+        }
         Double[] doubles = MoneySearch.findByserver(group.getId(), arrayList.get(0));
         if (doubles != null){
             String message = new MessageBuilder().add(new ComponentAt(groupUser.getId()))
@@ -36,24 +39,13 @@ public class MoneySearchCommand implements GroupCommand {
                     .add(new ComponentEmoji(11088))
                     .add("数据来源于DD373 仅供参考")
                     .add(new ComponentEmoji(11088))
+                    .newLine()
                     .add("冷却时间2mins")
                     .toString();
 
             eventGroupMessage.getHttpApi().sendGroupMsg(group.getId(),message);
         }
 
-
-
-
-       /* //double byserver = new MoneySearch().findByserver(group,arrayList.get(0));
-        if (byserver == 0) {
-            return "对不起，查询失败";
-        }
-        StringBuffer buffer = new StringBuffer().append("金价  ")
-                .append(arrayList.get(0))
-                .append(byserver)
-                .append("数据来自[DD373] 仅供参考");
-        return buffer.toString();*/
        return null;
     }
 

@@ -5,14 +5,16 @@ import cc.moecraft.icq.PicqConfig;
 import cc.moecraft.icq.command.interfaces.IcqCommand;
 import cc.moecraft.icq.event.IcqListener;
 import cc.moecraft.logger.environments.ColorSupportLevel;
-import club.vasilis.coolq.command.jx3.CommandCmdList;
-import club.vasilis.coolq.command.jx3.CommandDaily;
-import club.vasilis.coolq.command.jx3.MoneySearchCommand;
-import club.vasilis.coolq.command.jx3.examCommand;
+import club.vasilis.coolq.command.jx3.CommandPremission;
+import club.vasilis.coolq.command.jx3.CommandStartSBC;
+import club.vasilis.coolq.command.jx3.*;
+import club.vasilis.coolq.jx3.config.J3Config;
+import club.vasilis.coolq.jx3.config.ServerList;
 import club.vasilis.coolq.listener.ExceptionListener;
 import club.vasilis.coolq.listener.RequestListener;
 import club.vasilis.coolq.listener.SimpleTextLoggingListener;
 import club.vasilis.coolq.listener.TestFilter;
+
 
 /**
  * @author Vasilis
@@ -28,8 +30,12 @@ public class Main {
     private static IcqCommand[] commands = new IcqCommand[]{
             new MoneySearchCommand(),
             new examCommand(),
-            new CommandCmdList(),
-            new CommandDaily()
+            new CommandDaily(),
+            new CommandWeek(),
+            new CommandStartServer(),
+            new CommandPremission(),
+            new CommandStartSBC(),
+            new CommandRoll()
     };
     /**
      * 要注册的监听器
@@ -37,7 +43,6 @@ public class Main {
     private static IcqListener[] listeners = new IcqListener[]{
             new TestFilter(),
             new RequestListener(),
-            new SimpleTextLoggingListener(),
             new ExceptionListener()
     };
 
@@ -45,7 +50,7 @@ public class Main {
 
         // 创建机器人配置 ( 传入Picq端口 )
         PicqConfig config = new PicqConfig(31092)
-                .setDebug(true)
+                .setDebug(false)
                 .setColorSupportLevel(ColorSupportLevel.OS_DEPENDENT);
         // 创建机器人对象 ( 传入机器人配置对象 )
         bot = new PicqBotX(config);
@@ -60,10 +65,14 @@ public class Main {
         bot.getEventManager().registerListeners(listeners);
 
         // 在没有Debug的时候加上这个消息日志监听器
-        if (!bot.getConfig().isDebug())
+        if (!bot.getConfig().isDebug()) {
             bot.getEventManager().registerListener(new SimpleTextLoggingListener());
-        bot.enableCommandManager("bot -", "!", "/", "~", "！", "我以令咒命之，", "我以令咒命之, ", "test -");
+        }
+
+        bot.enableCommandManager("!", "/", "~", "！");
+        //bot.enableCommandManager();
         // 注册指令
+
         bot.getCommandManager().registerCommands(commands);
 
         // Debug输出所有已注册的指令
@@ -71,5 +80,8 @@ public class Main {
 
         // 启动机器人, 不会占用主线程
         bot.startBot();
+
+        J3Config.loadConfig();
+        ServerList.loadConfig();
     }
 }

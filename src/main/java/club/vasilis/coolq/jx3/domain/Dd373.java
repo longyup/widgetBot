@@ -1,4 +1,4 @@
-package club.vasilis.coolq.domain;
+package club.vasilis.coolq.jx3.domain;
 
 /**
  * @author Vasilis
